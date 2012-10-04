@@ -1,0 +1,89 @@
+      <div class='row'>
+        <div class='span12' style='text-align: center;'>
+          <h3>Get stuff from people who want to get rid of it.</h3>
+          <h1>We call this "Exchange".</h1>
+
+          <div id='welcome-header'>
+            <div style='margin-top: 85px;'>
+                <a class="btn btn-primary btn-large" href="/search">Find Something &raquo;</a>
+                <a class="btn btn-info btn-large" href="/register" style='margin-left: 40px;'>Sell Something &raquo;</a>
+            </div>
+
+            <h4 style='margin-top: 15px;'>
+                or
+            </h4>
+
+            <div style='margin-top: 15px;'>
+                <a class="btn btn-success btn-small" id='register' href="/register">Create An Account &raquo;</a>
+            </div>
+          </div>
+
+          <div id='login-signup' style='display: none; margin-top: 30px;'>
+            <div class='row'>
+              <div class='span4 offset2' style='text-align: left;'>
+                <h3 style='text-align: center;'>Sign Up</h3>
+                <form action='/signup' method='post' class='form-horizontal' id='signup-form' style='margin-top: 20px;'>
+                  <fieldset>
+                    <div class="control-group">
+                      <label class="control-label" for="first-name">First Name</label>
+                      <div class="controls">
+                        <input class="span2" id='first-name' name='first_name' type="text" />
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label" for="last-name">Last Name</label>
+                      <div class="controls">
+                        <input class="span2" id='last-name' name='last_name' type="text" />
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label" for="signup-email">Email</label>
+                      <div class="controls">
+                        <input class="span2" type="email" name='email' id='signup-email' />
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label" for="signup-password">Password</label>
+                      <div class="controls">
+                        <input class="span2" type="password" name='password' id='signup-password' />
+                      </div>
+                    </div>
+                    <div class="alert alert-error errors" style='display: none;'></div>
+                    <span class='help-block'>
+                      By clicking the "Sign up" button below, you agree to Exchange's <a href='#'>Terms of Service</a>.
+                    </span>
+                    <input type='hidden' name='authenticity_token' value='<?=$authenticity_token;?>'>
+                    <div style='margin-top: 10px; text-align: center;'>
+                      <button type='submit' class='btn btn-primary' style='text-align: center;'>Sign up</button>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+              <div class='span4' style='text-align: left;'>
+                <h3 style='text-align: center;'>Log In</h3>
+                <form action='/login' method='post' class='form-horizontal' id='login-form' style='margin-top: 20px;'>
+                  <fieldset>
+                    <div class="control-group">
+                      <label class="control-label" for="login-email">Email</label>
+                      <div class="controls">
+                        <input class="span2" type="email" name='email' id='login-email' />
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label" for="login-password">Password</label>
+                      <div class="controls">
+                        <input class="span2" type="password" name='password' id='login-password' />
+                      </div>
+                    </div>
+                    <div class="alert alert-error errors" style='display: none;'></div>
+                    <input type='hidden' name='authenticity_token' value='<?=$authenticity_token;?>'>
+                    <div style='margin-top: 10px; text-align: center;'>
+                      <button type='submit' class='btn btn-primary' style='text-align: center;'>Log in</button>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

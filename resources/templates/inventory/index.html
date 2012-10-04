@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>exchange</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">exchange</a>
+          <div class="nav-collapse">
+            <?=$this->render('partial/header', array('selected' => 'inventory') + compact('current_user'));?>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        <div class='row'>
+            <div class='span12'>
+                <div class='row' style='margin-bottom: 30px;'>
+                    <div class='span5'>
+                        <h2>Your Listings</h2>
+                    </div>
+                </div>
+
+                <div class='row' style='margin-bottom: 30px;'>
+                    <div class='span2'>
+                        <a class="btn btn-success" href="/listing/new">Add a New Listing</a>
+                    </div>
+                </div>
+
+                <div class='row' style='margin-bottom: 30px;'>
+                    <div class='span3'>
+                      <div class="btn-group">
+                        <button class="btn" id='select_all'>Select All</button>
+                        <button class="btn" id='deselect_all'>Deselect All</button>
+                      </div>
+                    </div>
+                    <div class='span2'>
+                        <button class="btn btn-success" href="#">Adjust to Market Average</button>
+                    </div>
+                    <div class='span3'>
+                      <div class="btn-group">
+                        <button class="btn btn-warning" href="#">Pause Listings</button>
+                        <button class="btn btn-danger" href="#">Remove Listings</button>
+                      </div>
+                    </div>
+                    <div class='span2 offset2'>
+                      <div class="btn-group">
+                        <button class="btn btn-info">Save</button>
+                        <button class="btn">Cancel</button>
+                      </div>
+                    </div>
+                </div>
+
+                <?php if ( !count($listings) ): ?>
+                <div class='row' style='margin-bottom: 15px;'>
+                  <div class='span4'>
+                    <p class="help-block">
+                        No items... why not <a href='/listing/new'>add</a> one?
+                    </p>
+                  </div>
+                </div>
+                <?php else: ?>
+
+                <p style='margin-bottom: 40px;'>
+                    <?php $total_listings = count($listings); ?>
+                    Showing 1-<?=$total_listings;?> of <?=$total_listings;?>
+                    <?php if ( $total_listings == 1 ): ?>
+                        item
+                    <?php else: ?>
+                        items
+                    <?php endif; ?>
+                </p>
+
+                <?php foreach ( $listings as $listing ): ?>
+                <?php $book = $listing->Book; ?>
+
+                <div class='row' style='margin-bottom: 15px;'>
+                  <div class='span1'>
+                      <input type='checkbox'>
+                  </div>
+                  <div class='span1'>
+                      <?php if ( $book->cover_medium ): ?>
+                      <img src='<?=$book->cover_medium;?>' alt="<?=$book->title;?>" width='90' />
+                      <?php else: ?>
+                      &nbsp;
+                      <?php endif; ?>
+                  </div>
+                  <div class='span3'>
+                    <strong>
+                      <a href='/listing/<?=$listing->get_primary_key();?>'><?=$book->title;?></a>
+                    </strong>
+                    <br />
+                    In auction: $<?=$listing->get_highest_offer();?>
+                  </div>
+                  <div class='span2'>
+                    <span class='label label-important'>Min: $<?=$listing->minimum_price;?></span>
+                    <br />
+                    <br />
+                    <span class='label label-success'>Ideal: $<?=$listing->ideal_price;?></span>
+                  </div>
+                  <div class='span3'>
+                      Active since: <?=date('F j, Y h:i a', strtotime($listing->created_at));?>
+                    <br />
+                    Condition: <?=$listing->condition_tag;?>
+                  </div>
+                  <div class='span2'>
+                    <button class="btn btn-warning">Adjust Listing</button>
+                  </div>
+                </div>
+                <?php endforeach; ?>
+                <?php endif; ?>
+
+            </div>
+        </div>
+
+    </div> <!-- /container -->
+
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+    <script>
+        $(document).ready(function() {
+            $('#select_all').click(function() {
+              $('input[type="checkbox"]').attr('checked', 'checked');
+            });
+
+            $('#deselect_all').click(function() {
+              $('input[type="checkbox"]').removeAttr('checked');
+            });
+
+        });
+
+    </script>
+
+  </body>
+</html>

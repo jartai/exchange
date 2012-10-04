@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>exchange</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">exchange</a>
+          <div class="nav-collapse">
+            <?=$this->render('partial/header', array('selected' => 'transaction') + compact('current_user'));?>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+        <?=$this->render('partial/room_nav');?>
+
+        <div class='row'>
+            <div class='span3'>
+                <div class='well'>
+                    <ul class="nav nav-list">
+                        <li class='nav-header'>Open Listings</li>
+                        <li>
+                            <a href="#">
+                                <img src='http://covers.openlibrary.org/b/id/27576-S.jpg' alt="A People's History" style='float: left; margin-right: 8px;'/>
+                                <p>
+                                    A People's History
+                                    <br />
+                                    $12
+                                </p>
+                            </a>
+                        </li>
+
+                        <li style='clear: both;'>
+                            <a href="#">
+                                <img src='http://covers.openlibrary.org/b/id/109287-S.jpg' alt="Anna Karenina" style='float: left; margin-right: 8px;'/>
+                                <p>
+                                    Anna Karenina
+                                    <br />
+                                    $20
+                                </p>
+                            </a>
+                        </li>
+
+                        <li style='clear: both;'>
+                            <a href="#">
+                                <img src='http://covers.openlibrary.org/b/id/225145-S.jpg' alt="The Brothers Karamazov" style='float: left; margin-right: 8px;'/>
+                                <p>
+                                    The Brothers Karamazov
+                                    <br />
+                                    $13.75
+                                </p>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                <img src='http://covers.openlibrary.org/b/id/27576-S.jpg' alt="A People's History" style='float: left; margin-right: 8px;'/>
+                                <p>
+                                    A People's History
+                                    <br />
+                                    $12
+                                </p>
+                            </a>
+                        </li>
+
+                        <li style='clear: both;'>
+                            <a href="#">
+                                <img src='http://covers.openlibrary.org/b/id/109287-S.jpg' alt="Anna Karenina" style='float: left; margin-right: 8px;'/>
+                                <p>
+                                    Anna Karenina
+                                    <br />
+                                    $20
+                                </p>
+                            </a>
+                        </li>
+
+                        <li style='clear: both;'>
+                            <a href="#">
+                                <img src='http://covers.openlibrary.org/b/id/225145-S.jpg' alt="The Brothers Karamazov" style='float: left; margin-right: 8px;'/>
+                                <p>
+                                    The Brothers Karamazov
+                                    <br />
+                                    $13.75
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class='span9'>
+                <img src='http://covers.openlibrary.org/b/id/119350-M.jpg' style='float: left; margin-right: 10px; margin-bottom: 30px;' />
+                <h2 id='title'>Faust</h2>
+                <p>
+                    <strong>Johann Wolfgang von Goethe</strong>
+                    <br />
+                    <strong>Some Publisher (2009)</strong>
+                    <br />
+                    <strong>ISBN:</strong> 123456789
+                    <br />
+                    <strong>Condition:</strong> Decent; dog accidentally bit it thinking it was a stuffed animal
+                    <br />
+                    <strong>MSRP:</strong> $29.99
+                    <br />
+                    <strong>Market Average</strong> $28.99
+                    <br />
+                    <strong>Your Reserve:</strong> $24.99
+                </p>
+
+                <div class='row' style='clear: both;'>
+                    <div class='span5'>
+                        <h2>Bidding Activity</h2>
+                        <ul class='nav nav-list'>
+                            <li>
+                                <span class="badge badge-success">+</span>
+                                <span style='color: #aaa;'>(7/8/12 4:24 pm)</span>
+                                Scott L. raised his bid from $5 to $17
+                            </li>
+                            <li>
+                                <span class="badge badge-success">+</span>
+                                <span style='color: #aaa;'>(7/5/12 4:24 pm)</span>
+                                Chris D. initial bid $12
+                            </li>
+                            <li>
+                                <span class="badge badge-success">+</span>
+                                <span style='color: #aaa;'>(7/4/12 4:24 pm)</span>
+                                Scott L. raised his bid from $2 to $5
+                            </li>
+                            <li>
+                                <span class="badge badge-success">+</span>
+                                <span style='color: #aaa;'>(7/3/12 4:24 pm)</span>
+                                Scott L. raised his bid from $1 to $2
+                            </li>
+                            <li>
+                                <span class="badge badge-success">+</span>
+                                <span style='color: #aaa;'>(7/2/12 4:24 pm)</span>
+                                Scott L. initial bid $1
+                            </li>
+                        </ul>
+                    </div>
+                    <div class='span4'>
+                        <div id='graph'></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div> <!-- /container -->
+
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/highcharts/2.2.3/highcharts.js'></script>
+
+    <script>
+      $(document).ready(function() {
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'graph',
+                type: 'spline',
+                inverted: true,
+                width: 300,
+                style: {
+                    margin: '0 auto'
+                }
+            },
+            title: {
+                text: "Baby, You're a Rich Man"
+            },
+            subtitle: {
+                text: 'Now That You Know Who You Are'
+            },
+            xAxis: {
+                reversed: false,
+                title: {
+                    enabled: true,
+                    text: 'Price'
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value +'$';
+                    }
+                },
+                maxPadding: 0.05,
+                showLastLabel: true
+            },
+            yAxis: {
+                title: {
+                    text: 'Days'
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value;
+                    }
+                },
+                lineWidth: 2
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.x +' km: '+ this.y +'°C';
+                }
+            },
+            plotOptions: {
+                spline: {
+                    marker: {
+                        enable: false
+                    }
+                }
+            },
+            series: [{
+                name: 'Temperature',
+                data: [[0, 15], [10, -50], [20, -56.5], [30, -46.5], [40, -22.1],
+                    [50, -2.5], [60, -27.7], [70, -55.7], [80, -76.5]]
+            }]
+        });
+
+      });
+    </script>
+
+  </body>
+</html>

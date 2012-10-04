@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>create a new listing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">exchange</a>
+          <div class="nav-collapse">
+            <?=$this->render('partial/header', array('selected' => '') + compact('current_user'));?>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class='row'>
+
+        <div class='span4'>
+          <h2>Create a New Listing</h2>
+
+          <form action='/listing/new/book' method='get'>
+            <label for="isbn">Enter the book's ISBN:</label>
+            <div class="controls">
+              <div class="input-append">
+                <input class="input-large" name="isbn" id="isbn" type="text" value='<?=$isbn;?>'><!--
+                --><button class="btn" id='isbn-search' type="submit">Go</button>
+                <p class="help-block">
+                  Samples:<br />
+                  0374528373<br />
+                  0143035002<br />
+                  978-1400079988
+                </p>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+      <?php if ( $search ): ?>
+
+        <?php if ( !$found ): ?>
+            <div class='row'>
+                <div class='span4'>
+                    <p class="help-block">
+                        Looks like we couldn't find that one... try again?
+                    </p>
+
+                </div>
+            </div>
+        <?php else: ?>
+            <div id='book-result' class='row'>
+
+                <div class='span3'>
+                <?php if ( $cover ): ?>
+                <img src='<?=$cover;?>' />
+                <?php else: ?>
+                <div>&nbsp;</div>
+                <?php endif; ?>
+                </div>
+
+                <div class='span9'>
+                <h3 id='title'><?=$title;?></h3>
+                <h4 id='author'><?=$author;?></h4>
+                <h5 id='publish'><?=$publish;?></h5>
+
+                <form action='/listing/new/book' method='post' class='well'>
+                    <fieldset>
+                    <div class="control-group">
+                        <label class="control-label" for="condition-tag">Condition:</label>
+                        <div class="controls">
+                            <select name="condition_tag" id="condition-tag">
+                                <option value='New'>New</option>
+                                <option value='Like New'>Like New</option>
+                                <option value='Great'>Great</option>
+                                <option value='Acceptable'>Acceptable</option>
+                                <option value='Poor'>Poor</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="description">Description:</label>
+                        <div class="controls">
+                            <textarea class="input-large" name="description" id="description" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <p>Average Retail Price: $<?=$average_retail_price;?></p>
+
+                    <div class="control-group">
+                        <label class="control-label" for="minimum-price">Minimum Price:</label>
+                        <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on">$</span><!--
+                            --><input class="span1" name="minimum_price" id="minimum-price" type="number" min='0.01' value='0.01' step='0.01'>
+                            <p class="help-block">The minimum price will never be displayed.</p>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="ideal-price">Ideal Price:</label>
+                        <div class="controls">
+                            <div class="input-prepend">
+                                <span class="add-on">$</span><!--
+                                --><input class="span1" name="ideal_price" id="ideal-price" type="number" min='0.01' value='0.01' step='0.01'>
+                                <p class="help-block">The ideal price is what will be displayed to buyers.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <input type='hidden' name='authenticity_token' value='<?=$authenticity_token;?>'>
+                        <input type='hidden' name='isbn' value='<?=$isbn;?>'>
+                        <button type="submit" class="btn btn-primary">Create Listing</button>
+                        <button class="btn">Cancel</button>
+                    </div>
+                    </fieldset>
+                </form>
+                </div>
+
+            </div>
+        <?php endif; ?>
+      <?php endif; ?>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+    <script>
+      $(document).ready(function() {
+
+      });
+
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>exchange</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">exchange</a>
+          <div class="nav-collapse">
+            <?=$this->render('partial/header', array('selected' => 'listing') + compact('current_user'));?>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        <div class='row'>
+
+            <div class='span3'>
+                <div class='well'>
+                    <ul class="nav nav-list">
+                        <li class='nav-header'>Other Open Listings</li>
+                        <?php foreach ( $listings as $listing ): ?>
+                        <li style='margin-bottom: 6px;'>
+                        <?php $book = $listing->Book; ?>
+                            <a href="/listing/<?=$listing->get_primary_key();?>">
+                                <?php if ( $book->cover_small ): ?>
+                                    <img src='<?=$book->cover_small;?>' alt="<?=$book->title;?>" style='float: left; margin-right: 8px;'/>
+                                <?php else: ?>
+                                    &nbsp;
+                                <?php endif; ?>
+                                <p>
+                                    <?=$book->title;?>
+                                    <br />
+                                    <i class='icon-signal'></i>
+                                    $<?=$listing->get_highest_offer();?>
+                                </p>
+                                <div style='clear: both;'></div>
+                            </a>
+                        </li>
+                        <?php endforeach; ?>
+                        <li style='margin-bottom: 6px' class='divider'></li>
+                        <li style='margin-bottom: 6px'>
+                            <a href="/inventory" style='text-align: center;'>See More </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class='span9'>
+                <?php $current_book = $current_listing->Book; ?>
+                <?php if ( $current_book->cover_medium ): ?>
+                    <img src='<?=$current_book->cover_medium;?>' style='float: left; margin-right: 10px; margin-bottom: 30px;' />
+                <?php endif; ?>
+                <h2 id='title'><?=$current_book->title;?></h2>
+                <p>
+                    <strong><?=$current_book->authors;?></strong>
+                    <br />
+                    <strong>
+                        <?=$current_book->publishers;?>
+                        <?php if ( $current_book->publish_date): ?>
+                            (<?=$current_book->publish_date;?>)
+                        <?php endif; ?>
+                    </strong>
+                    <br />
+                    <?php if ( $current_book->isbn_10 ): ?>
+                    <strong>ISBN-10:</strong> <?=$current_book->isbn_10;?>
+                    <br />
+                    <?php endif; ?>
+                    <?php if ( $current_book->isbn_13 ): ?>
+                    <strong>ISBN-13:</strong> <?=$current_book->isbn_13;?>
+                    <br />
+                    <?php endif; ?>
+                    <strong>Condition:</strong> <?=$current_listing->condition_tag;?>
+                    <br />
+                    <strong>Description:</strong> <?=$current_listing->description;?>
+                    <br />
+                    <strong>Average Retail Price:</strong> $<?=$current_book->external_average_market_price;?>
+                    <br />
+                    <strong>Market Average Price:</strong> $<?=$current_book->internal_average_market_price;?>
+                    <br />
+                    <strong>Your Minimum Price:</strong> $<?=$current_listing->minimum_price;?>
+                    <br />
+                    <strong>Your Ideal Price:</strong> $<?=$current_listing->ideal_price;?>
+                </p>
+
+                <div style='clear: both;'>
+                    <div class='row'>
+                        <div class='span5'>
+                            <h2>Bidding Activity</h2>
+
+                            <p>
+                                <strong>Highest Offer Thus Far:</strong> $<?=$current_listing->get_highest_offer();?>
+                                <br />
+                                <strong>Number of Offers:</strong> <?=$current_listing->get_number_of_offers();?>
+                                <br />
+                                <strong>Number of Interested Buyers:</strong> <?=$current_listing->get_number_of_interested_buyers($current_user->get_primary_key());?>
+                            </p>
+
+                            <ul class='nav'>
+                                <?php foreach ( $offers as $offer ): ?>
+                                <li>
+                                    <span class="badge badge-success">+</span>
+                                    <span style='color: #aaa;'>(<?=date('m/d/y g:i a', strtotime($offer->created_at));?>)</span>
+                                    <?php $user = $offer->User; ?>
+                                    <span>
+                                        <a href='#'><?=$user->first_name . " " . $user->last_name;?></a> made an offer of $<?=number_format($offer->price, 2);?>
+                                    </span>
+                                </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                        <div class='span4'>
+                            <div id='graph'></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div> <!-- /container -->
+
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/highcharts/2.2.3/highcharts.js'></script>
+
+    <script>
+      $(document).ready(function() {
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'graph',
+                type: 'spline',
+                inverted: true,
+                width: 300,
+                style: {
+                    margin: '0 auto'
+                }
+            },
+            title: {
+                text: "Baby, You're a Rich Man"
+            },
+            subtitle: {
+                text: 'Now That You Know Who You Are'
+            },
+            xAxis: {
+                reversed: false,
+                title: {
+                    enabled: true,
+                    text: 'Price'
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value +'$';
+                    }
+                },
+                maxPadding: 0.05,
+                showLastLabel: true
+            },
+            yAxis: {
+                title: {
+                    text: 'Days'
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value;
+                    }
+                },
+                lineWidth: 2
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.x +' km: '+ this.y +'°C';
+                }
+            },
+            plotOptions: {
+                spline: {
+                    marker: {
+                        enable: false
+                    }
+                }
+            },
+            series: [{
+                name: 'Temperature',
+                data: [[0, 15], [10, -50], [20, -56.5], [30, -46.5], [40, -22.1],
+                    [50, -2.5], [60, -27.7], [70, -55.7], [80, -76.5]]
+            }]
+        });
+
+      });
+    </script>
+
+  </body>
+</html>

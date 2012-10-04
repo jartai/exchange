@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>exchange</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/css/font-awesome.css" rel="stylesheet">
+    <link href="/css/jquery.timepicker-1.2.2.min.css" rel="stylesheet">
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">exchange</a>
+          <div class="nav-collapse">
+            <?=$this->render('partial/header', array('selected' => 'listing') + compact('current_user'));?>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        <div class='row'>
+            <div class='span3'>
+                <div class='well'>
+                    <ul class="nav nav-list">
+                        <li class='nav-header'>Other Open Listings</li>
+                        <?php foreach ( $listings as $listing ): ?>
+                        <li style='margin-bottom: 6px;'>
+                        <?php $book = $listing->Book; ?>
+                            <a href="/listing/<?=$listing->get_primary_key();?>">
+                                <?php if ( $book->cover_small ): ?>
+                                    <img src='<?=$book->cover_small;?>' alt="<?=$book->title;?>" style='float: left; margin-right: 8px;'/>
+                                <?php else: ?>
+                                    &nbsp;
+                                <?php endif; ?>
+                                <p>
+                                    <?=$book->title;?>
+                                    <br />
+                                    <i class='icon-signal'></i>
+                                    $<?=$listing->get_highest_offer();?>
+                                </p>
+                                <div style='clear: both;'></div>
+                            </a>
+                        </li>
+                        <?php endforeach; ?>
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class='span6'>
+                <?php $current_book = $current_listing->Book; ?>
+                <?php if ( $current_book->cover_medium ): ?>
+                    <img src='<?=$current_book->cover_medium;?>' alt='<?=$current_book->title;?>' style='float: left; margin-right: 10px; margin-bottom: 30px;' />
+                <?php endif; ?>
+                <h2 id='title'><?=$current_book->title;?></h2>
+                <p>
+                    <strong><?=$current_book->authors;?></strong>
+                    <br />
+                    <strong>
+                        <?=$current_book->publishers;?>
+                        <?php if ( $current_book->publish_date): ?>
+                            (<?=$current_book->publish_date;?>)
+                        <?php endif; ?>
+                    </strong>
+                    <br />
+                    <?php if ( $current_book->isbn_10 ): ?>
+                    <strong>ISBN-10:</strong> <?=$current_book->isbn_10;?>
+                    <br />
+                    <?php endif; ?>
+                    <?php if ( $current_book->isbn_13 ): ?>
+                    <strong>ISBN-13:</strong> <?=$current_book->isbn_13;?>
+                    <br />
+                    <?php endif; ?>
+                    <strong>Condition:</strong> <?=$current_listing->condition_tag;?>
+                    <br />
+                    <strong>Description:</strong> <?=$current_listing->description;?>
+                    <br />
+                    <strong>Average Retail Price:</strong> $<?=$current_book->external_average_market_price;?>
+                    <br />
+                    <strong>Market Average Price:</strong> $<?=$current_book->internal_average_market_price;?>
+                    <br />
+                    <strong>Your Minimum Price:</strong> $<?=$current_listing->minimum_price;?>
+                    <br />
+                    <strong>Your Ideal Price:</strong> $<?=$current_listing->ideal_price;?>
+                </p>
+
+                <form action='/listing/<?=$current_listing->get_primary_key();?>/schedule' method='post' class='well' style='clear: both;'>
+                    <?php $days_before_cancel = $winning_offer->get_days_before_cancel(); ?>
+                    <?php if ( !$days_before_cancel ): ?>
+                    <h3>You've Sold This Item! But...</h3>
+                    <p>An email has been sent to you and <?=$buyer->first_name . ' ' . $buyer->last_name;?> to work out schedule details, but you still haven't confirmed the details of the exchange.</p>
+                    <p>More than three days have passed since you won this listing. Would you like to <a href='/listing/<?=$current_listing->get_primary_key();?>/cancel'>cancel the exchange</a>?</p>
+                    <?php else: ?>
+                    <h3>You've Sold This Item!</h3>
+                    <p>An email has been sent to you and <?=$buyer->first_name . ' ' . $buyer->last_name;?> so that you can get the ball rolling on the next steps.</p>
+                    <p>After working out the details with <?=$buyer->first_name;?>, confirm the schedule details below. Note that you only have three days to do this before the buyer is given the opportunity to cancel the exchange.</p>
+
+                    <fieldset>
+                        <div class="control-group">
+                            <label class="control-label" for="location" style='display: inline-block;'>Location:</label>
+                            <span>
+                                <small>
+                                    <a href='#' id='show-map' style='display: inline-block;'>(show map)</a>
+                                </small>
+                            </span>
+                            <div class="controls">
+                                <input type="text" id="location" class='input-xxlarge' />
+                            </div>
+                        </div>
+
+                        <div id='map_canvas' style='display: none; height: 400px; width: 540px; margin-bottom: 20px;'></div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="date">Date:</label>
+                            <div class="controls">
+                                <input type="text" name="date" id="date" />
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="time">Time:</label>
+                            <div class="controls">
+                                <input type="text" name="time" id="time" />
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <input type='hidden' name='reference' id='reference' value='' />
+                            <input type='hidden' name='authenticity_token' value='<?=$authenticity_token;?>'>
+                            <button type="submit" class="btn btn-success">Submit!</button>
+                        </div>
+                    </fieldset>
+
+
+                    <?php endif; ?>
+                </form>
+            </div>
+        </div>
+    </div> <!-- /container -->
+
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+    <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js'></script>
+    <script src='/js/jquery.timepicker-1.2.2.min.js'></script>
+    <script src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+
+    <script>
+      $(document).ready(function() {
+        $('#date').datepicker({
+          dateFormat: 'MM d, yy',
+          minDate: 0,
+          maxDate: 14
+        });
+
+        $('#time').timepicker({
+          dropdown: false
+        });
+
+        var mapOptions = {
+          // TODO: FIX ME
+          center: new google.maps.LatLng(40.714199, -74.006401),
+          zoom: 13,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(
+            document.getElementById('map_canvas'), mapOptions
+        );
+
+        var input = document.getElementById('location');
+        var options = {
+            types: ['establishment'],
+            componentRestrictions: {country: 'us'}
+        };
+        var autocomplete = new google.maps.places.Autocomplete(input, options);
+
+        autocomplete.bindTo('bounds', map);
+
+        var infowindow = new google.maps.InfoWindow();
+        var marker = new google.maps.Marker({map: map});
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+          infowindow.close();
+          var place = autocomplete.getPlace();
+          if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+          } else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(13);
+          }
+
+          marker.setPosition(place.geometry.location);
+
+          var address = '';
+          if (place.address_components) {
+            address = [
+              (place.address_components[0] && place.address_components[0].short_name || ''),
+              (place.address_components[1] && place.address_components[1].short_name || ''),
+              (place.address_components[2] && place.address_components[2].short_name || '')
+            ].join(' ');
+          }
+
+          infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+          infowindow.open(map, marker);
+
+          $('#reference').val(place.reference);
+        });
+
+        $('#show-map').click(function(event) {
+          var $this = $(this);
+          var txt = $this.html();
+          event.preventDefault();
+          if (txt == '(show map)') {
+            $this.html('(hide map)');
+          } else {
+            $this.html('(show map)');
+          }
+          $('#map_canvas').slideToggle(function() {
+            var position;
+            google.maps.event.trigger(map, 'resize');
+            if (position = marker.getPosition()) {
+              map.setCenter(position);
+            }
+          });
+        });
+
+      });
+
+    </script>
+
+  </body>
+</html>
